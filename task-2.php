@@ -1,11 +1,11 @@
 <?php
 $host = "localhost";
 $database = "school_management";
-$user = "username";
+$user = "root";
 $password = "";
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
+    $pdo = new PDO("mysql:host=$host;database=$database;charset=utf8", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     echo "Соединение с базой данных успешно.<br>";
 } catch (PDOException $e) {
@@ -65,8 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         default:
             echo "Ошибка: неизвестное действие.<br>";
             break;
-    }
-}
+    }}
 
 function showStudents($pdo) {
     try {
@@ -93,8 +92,7 @@ function showGroups($pdo) {
         echo "</table>";
     } catch (PDOException $e) {
         echo "Ошибка при получении списка групп: " . $e->getMessage();
-    }
-}
+    }}
 
 function showStudentsWithGroups($pdo) {
     try {
@@ -123,11 +121,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($student_id && $course_id) {
                 $stmt = $pdo->prepare("INSERT INTO student_courses (student_id, course_id) VALUES (:student_id, :course_id)");
                 $stmt->execute(['student_id' => $student_id, 'course_id' => $course_id]);
-                echo "Студент зарегистрирован на курс!
-";
+                echo "Студент зарегистрирован на курс!";
             } else {
-                echo "Ошибка: ID студента и ID курса не могут быть пустыми.
-";
+                echo "Ошибка: ID студента и ID курса не могут быть пустыми.";
             }
             break;
 
@@ -144,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ";
             }
             break;
-
+        
         case 'add_teacher':
             $name = $_POST['name'] ?? '';
             if ($name) {
@@ -233,7 +229,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Студент с таким именем не найден.<br>";
     }
     break;
-            }
+    }
+
     case 'search_student_by_name':
         $course_name = trim($_POST['course_name'] ?? '');
     
@@ -289,6 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo "Ошибка: Курс с таким ID не найден.<br>";
             }
             break;
+        }
 
             function showCoursesWithStudentCount($pdo) {
                 $sql = "SELECT courses.name AS course_name, COUNT(student_courses.student_id) AS student_count 
@@ -422,7 +420,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 } catch (PDOException $e) {
                     echo "Ошибка при получении данных: " . $e->getMessage();
-                }
+                }}
 ?>
 
 <!DOCTYPE html>
@@ -513,10 +511,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="hidden" name="action" value="update_student_name">
         <label for="update_student_id">ID студента:</label>
         <input type="number" id="update_student_id" name="student_id" required>
-        
         <label for="new_name">Новое имя студента:</label>
         <input type="text" id="new_name" name="new_name" required>
-        
         <button type="submit">Обновить имя</button>
     </form>
 
@@ -525,7 +521,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="hidden" name="action" value="add_teacher">
         <label for="teacher_name">Имя преподавателя:</label>
         <input type="text" id="teacher_name" name="name" required>
-        
         <button type="submit">Добавить преподавателя</button>
     </form>
 
@@ -549,10 +544,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="hidden" name="action" value="update_student_name">
         <label for="update_student_id">ID студента:</label>
         <input type="number" id="update_student_id" name="student_id" required>
-        
         <label for="new_name">Новое имя студента:</label>
         <input type="text" id="new_name" name="new_name" required>
-        
         <button type="submit">Обновить имя</button>
     </form>
 
@@ -561,7 +554,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="hidden" name="action" value="add_teacher">
         <label for="teacher_name">Имя преподавателя:</label>
         <input type="text" id="teacher_name" name="name" required>
-        
         <button type="submit">Добавить преподавателя</button>
     </form>
 
@@ -585,10 +577,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="hidden" name="action" value="update_student_name">
         <label for="update_student_id">ID студента:</label>
         <input type="number" id="update_student_id" name="student_id" required>
-        
         <label for="new_name">Новое имя студента:</label>
         <input type="text" id="new_name" name="new_name" required>
-        
         <button type="submit">Обновить имя</button>
     </form>
 
@@ -597,34 +587,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="hidden" name="action" value="add_teacher">
         <label for="teacher_name">Имя преподавателя:</label>
         <input type="text" id="teacher_name" name="name" required>
-        
         <button type="submit">Добавить преподавателя</button>
     </form>
     
     <h2>Регистрация студента на курс</h2>
     <form method="POST">
         <input type="hidden" name="action" value="register_course">
-        
         <label for="student_id">Студент:</label>
         <select name="student_id" id="student_id" required>
             <option value="" disabled selected>Выберите студента</option>
+
             <?php
             $students = getOptions($pdo, 'students', 'id', 'name');
             foreach ($students as $student) {
                 echo "<option value=\"{$student['id']}\">{$student['name']}</option>";
             }
             ?>
+
         </select>
         
         <label for="course_id">Курс:</label>
         <select name="course_id" id="course_id" required>
             <option value="" disabled selected>Выберите курс</option>
+
             <?php
             $courses = getOptions($pdo, 'courses', 'id', 'name');
             foreach ($courses as $course) {
                 echo "<option value=\"{$course['id']}\">{$course['name']}</option>";
             }
             ?>
+
         </select>
         
         <button type="submit">Зарегистрировать</button>
