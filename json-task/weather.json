@@ -1,0 +1,32 @@
+[
+    {
+        "city": "Москва",
+        "temperature": 15,
+        "condition": "облачно"
+    },
+    {
+        "city": "Сочи",
+        "temperature": 25,
+        "condition": "солнечно"
+    },
+    {
+        "city": "Петербург",
+        "temperature": 18,
+        "condition": "дождь"
+    },
+    {
+        "city": "Калуга",
+        "temperature": 22,
+        "condition": "ясно"
+    },
+    {
+        "city": "Екатеринбург",
+        "temperature": 19,
+        "condition": "облачно"
+    },
+    {
+        "city": "Симферополь",
+        "temperature": 30,
+        "condition": "солнечно"
+    }
+]
